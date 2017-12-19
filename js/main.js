@@ -9,6 +9,7 @@ words["nip"] = nip
 words["swap"] = swap
 words["over"] = over
 words["."] = dot
+words["circle"] = circle
 var user = {};
 /** 
  * Your thoughtful comment here.
@@ -17,26 +18,89 @@ var user = {};
 function Stack(){
     this.size = 0;
     this.stack = {};
+    //console.log(this.stack);
 }
 
 Stack.prototype.push = function(value){
-    this.stack[this.count] = value;
-    this.count++;
+    this.stack[this.size] = value;
+    this.size++;
 }
 
 Stack.prototype.pop = function(){
-    var top = this.stack[this.count];
-    delete this.stack[this.count];
-    this.count--;
+    var top = this.stack[this.size-1];
+    var s = this.size-1;
+    delete this.stack[s.toString()];
+    this.size--;
     return top;
 }
 
+function ObservableStack(){
+    this.observer = [];
+    
+    //Object.create(Stack);
+    //new Stack();
+}
+ObservableStack.prototype = new Stack();
+//Object.create(Stack.prototype);
+//new Stack();
+//Object.create(Stack.prototype)
+//new Stack();
+//var stack1 = new Stack();
+ObservableStack.prototype.registerObserver = function(fn){
+    this.observer.push(fn);
+}
+
+ObservableStack.prototype.notifyObserver = function(){
+    this.observer.forEach(function(fn){
+        fn(this.stack);
+    }, this);
+}
+//ObservableStack.prototype = new Stack();
+ObservableStack.prototype.push = function(value){
+    Stack.prototype.push.call(this, value);
+    ObservableStack.prototype.notifyObserver.call(this);
+
+}
+
+ObservableStack.prototype.pop = function(){
+    var top = Stack.prototype.pop.call(this);
+
+   ObservableStack.prototype.notifyObserver.call(this);
+   return top;
+}
+
+
 function emptyStack(stack) {
-    while(stack.length > 0) { stack.pop(); }
+    for(var i = Object.keys(stack).length-1; i >= 0; i--){
+        stack.pop();
+    }
+    //while(Object.keys(stack).length > 0) { stack.pop(); }
+    /*for(var i = Object.keys(stack).length-1; i >= 0; i--){
+        delete stack[i];
+    }*/
     console.log(stack);
     
 }
 
+
+function circle(stack)
+  {
+var canvas = document.getElementById('circle');
+//if (canvas.getContext)
+//{
+var ctx = canvas.getContext('2d'); 
+var y =  stack.pop();
+var x = stack.pop();
+var r = stack.pop();
+ctx.canvas.height = Math.max(y,x,r)*3;
+ctx.canvas.width =  Math.max(y,x,r)*3;
+ctx.beginPath();
+ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+ctx.lineWidth = 3;
+ctx.strokeStyle = '#FF0000';
+ctx.stroke();
+//}
+}
 /**
  * Print a string out to the terminal, and update its scroll to the
  * bottom of the screen. You should call this so the screen is
@@ -50,8 +114,10 @@ function print(terminal, msg) {
 }
 function add(stack){
 	var first = stack.pop();
+    console.log("first " + first);
         var second = stack.pop();
-        stack.push(first+second);
+        var plus = first + second;
+        stack.push(plus);
 }
 
 function dot(stack){
@@ -102,9 +168,15 @@ function over(stack){
  */
 function renderStack(stack) {
     $("#thestack").empty();
-    stack.slice().reverse().forEach(function(element) {
+    console.log("this is the length of the stack in renderStack" + stack.length);
+    for(var i = Object.keys(stack).length-1; i >= 0; i--){
+   // for(var key in stack){
+        $("#thestack").append("<tr><td>" + stack[i] + "</td></tr>");
+    }
+    
+    /*stack.slice().reverse().forEach(function(element) {
         $("#thestack").append("<tr><td>" + element + "</td></tr>");
-    });
+    });*/
 };
 
 /** 
@@ -149,7 +221,7 @@ function process(stack, input, terminal) {
     else {
         print(terminal, ":-( Unrecognized input");
     }
-    renderStack(stack);
+    //renderStack(stack);
     console.log("this is the stack" + " " + stack);
 }
 };
@@ -175,33 +247,39 @@ function userbutton(stack, key, terminal){
      
      $("#user-defined-funcs").append(createbutton(stack, key, terminal));
 
-     $("#user-defined-funcs").append('<br></br>');
+     //$("#user-defined-funcs").append('<br></br>');
 
 }
 // Whenever the page is finished loading, call this function. 
 // See: https://learn.jquery.com/using-jquery-core/document-ready/
+
 $(document).ready(function() {
     var terminal = new Terminal();
     terminal.setHeight("400px");
     terminal.blinkingCursor(true);
+    var stack2 = new ObservableStack();
+    stack2.registerObserver(renderStack);
+    console.log(stack2.size);
+    console.log(stack2.stack);
     
     // Find the "terminal" object and change it to add the HTML that
     // represents the terminal to the end of it.
     $("#terminal").append(terminal.html);
 
-    var stack = [];
+    //var stack = [];
     //var user = {};
     print(terminal, "Welcome to HaverForth! v0.1");
     print(terminal, "As you type, the stack (on the right) will be kept in sync");
 
-    runRepl(terminal, stack);
+    runRepl(terminal, stack2);
 $('#reset').click(function(){
    //      emptyStack(stack);
 //while(stack.length > 0) { stack.pop(); }
-emptyStack(stack);
-renderStack(stack);
+emptyStack(stack2);
+//renderStack(stack);
 $("#thestack").append("<tr><td>" + "empty" + "</td></tr>");
 });
+//circle();
 //userbutton(user);
 //var $something = $('<input/>').attr({ type: 'button', name:'btn1', value:'am button', click: function(){process(stack, '+', terminal)}});
 //$("#user-defined-funcs").append($something);
