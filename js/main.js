@@ -30,22 +30,18 @@ Stack.prototype.pop = function(){
     var top = this.stack[this.size-1];
     var s = this.size-1;
     delete this.stack[s.toString()];
+    //learned about delete
+    //https://stackoverflow.com/questions/3455405/how-do-i-remove-a-key-from-a-javascript-object
     this.size--;
     return top;
 }
 
+//where I also leanred about inheritance
+//http://phrogz.net/js/classes/OOPinJS2.html
 function ObservableStack(){
     this.observer = [];
-    
-    //Object.create(Stack);
-    //new Stack();
 }
 ObservableStack.prototype = new Stack();
-//Object.create(Stack.prototype);
-//new Stack();
-//Object.create(Stack.prototype)
-//new Stack();
-//var stack1 = new Stack();
 ObservableStack.prototype.registerObserver = function(fn){
     this.observer.push(fn);
 }
@@ -74,32 +70,30 @@ function emptyStack(stack) {
     for(var i = Object.keys(stack).length-1; i >= 0; i--){
         stack.pop();
     }
-    //while(Object.keys(stack).length > 0) { stack.pop(); }
-    /*for(var i = Object.keys(stack).length-1; i >= 0; i--){
-        delete stack[i];
-    }*/
     console.log(stack);
     
 }
 
-
+//creates a circle using the top 3 elements in the stack can be recognized by using 'circle'
 function circle(stack)
   {
 var canvas = document.getElementById('circle');
-//if (canvas.getContext)
-//{
+if (canvas.getContext)
+{
 var ctx = canvas.getContext('2d'); 
 var y =  stack.pop();
 var x = stack.pop();
 var r = stack.pop();
 ctx.canvas.height = Math.max(y,x,r)*3;
 ctx.canvas.width =  Math.max(y,x,r)*3;
+//learned about ctx.canvas.height and ctx.canvas.width
+//https://stackoverflow.com/questions/4938346/canvas-width-and-height-in-html5
 ctx.beginPath();
 ctx.arc(x, y, r, 0, 2 * Math.PI, false);
 ctx.lineWidth = 3;
 ctx.strokeStyle = '#FF0000';
 ctx.stroke();
-//}
+}
 }
 /**
  * Print a string out to the terminal, and update its scroll to the
@@ -279,13 +273,5 @@ emptyStack(stack2);
 //renderStack(stack);
 $("#thestack").append("<tr><td>" + "empty" + "</td></tr>");
 });
-//circle();
-//userbutton(user);
-//var $something = $('<input/>').attr({ type: 'button', name:'btn1', value:'am button', click: function(){process(stack, '+', terminal)}});
-//$("#user-defined-funcs").append($something);
-//var $something;
 
-
-//$("#thestack").append("<tr><td>" + "empty" + "</td></tr>");
-//emptyStack(stack);
 });
