@@ -1,0 +1,28 @@
+Reflect upon the following questions and write up an email to me:
+
+What was the most challenging part of this lab?
+Understanding and implementing an observer pattern. The hardest part of observer patterns was thinking of updating a function that uses the data structure at the same time while changing the data structure.
+
+What did you enjoy most about JavaScript?
+Not having to say the types every time I created a function, variable or data structure.
+
+What did you least enjoy about JavaScript?
+The lack of true inheritance so it was very hard to understand how inheritance works in javascript.
+
+Do you think you would choose JavaScript over other languages for this task? What other language would you have chosen to implement the interpreter in, and why?
+Javascript was helpful in actually visualizing what is in the stack, however I wish it combined C++ elements in it so it had types. 
+
+
+
+Did the lack of type safety hurt you on this lab? Were there any points at which you got tripped up by not having types?
+Most of the time the lack of types didn't both me as I knew what the types the functions, variables and data structures were. However whenever I stopped working on my code for
+a little bit and came back to it it was kind of difficult to remember what the types of things were especially the variables in a function. 
+
+
+Were any of the concepts used in class helpful to you completing this project, even though this lab is in JavaScript (vs Racket / C++)?
+Since JavaScript has functional and object oriented programming aspects to it, it was very helpful to have knowledge of both of these types of programming
+while working on the project. 
+
+If you could add one feature to this application, but don't have time / know-how to do so, what would it be? What concepts from the class do you envision could help get you there?
+Maybe showing the memory diagram of the stack from the beginning and as you keep adding and popping numbers of the stack. Since we have worked on memory diagrams a lot in class, I think it would be very interesting
+to actually show in real time what is happening.
