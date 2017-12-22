@@ -88,6 +88,8 @@ ctx.canvas.height = Math.max(y,x,r)*3;
 ctx.canvas.width =  Math.max(y,x,r)*3;
 //learned about ctx.canvas.height and ctx.canvas.width
 //https://stackoverflow.com/questions/4938346/canvas-width-and-height-in-html5
+//learned about Math.max
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
 ctx.beginPath();
 ctx.arc(x, y, r, 0, 2 * Math.PI, false);
 ctx.lineWidth = 3;
